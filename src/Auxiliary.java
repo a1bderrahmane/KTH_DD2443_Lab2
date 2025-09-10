@@ -1,3 +1,4 @@
+
 /**
  * Helper methods.
  */
@@ -20,24 +21,25 @@ public class Auxiliary {
 
         /**
          * Calculates mean and standard deviation of array elements.
+         * 
          * @param res array of longs
          * @return stats, such that, stats[0] = mean, stats[1] = std
          */
-        public static double[] statistics(long[] res)
-        {
+        public static double[] statistics(long[] res) {
                 double mean = LongStream.of(res).sum() / res.length;
                 double variance = LongStream.of(res)
-                        .mapToDouble(v -> (v - mean) * (v - mean))
-                        .sum() / (res.length - 1); 
-                return new double[]{mean, Math.sqrt(variance)};
+                                .mapToDouble(v -> (v - mean) * (v - mean))
+                                .sum() / (res.length - 1);
+                return new double[] { mean, Math.sqrt(variance) };
         }
 
         /**
          * Measures the execution time of the 'sorter'.
-         * @param sorter Sorting algorithm
-         * @param n Size of list to sort
+         * 
+         * @param sorter   Sorting algorithm
+         * @param n        Size of list to sort
          * @param initSeed Initial seed used for array generation
-         * @param m Measurment rounds.
+         * @param m        Measurment rounds.
          * @return array of execution time
          */
         public static long[] measure(Sorter sorter, int n, int initSeed, int m) {
@@ -54,10 +56,11 @@ public class Auxiliary {
 
         /**
          * Checks that the 'sorter' sorts.
-         * @param sorter Sorting algorithm
-         * @param n Size of list to sort
+         * 
+         * @param sorter   Sorting algorithm
+         * @param n        Size of list to sort
          * @param initSeed Initial seed used for array generation
-         * @param m Number of attempts.
+         * @param m        Number of attempts.
          * @return True if the sorter successfully sorted all generated arrays.
          */
         public static boolean validate(Sorter sorter, int n, int initSeed, int m) {
@@ -65,7 +68,10 @@ public class Auxiliary {
                         int[] arr = arrayGenerate(initSeed - i, n);
                         int[] arrCopy = Arrays.copyOf(arr, n);
                         Arrays.parallelSort(arrCopy);
+                        // System.out.println(Arrays.toString(arr));
                         sorter.sort(arr);
+                        // System.out.println(Arrays.toString(arr));
+
                         if (!Arrays.equals(arr, arrCopy))
                                 return false;
                 }

@@ -1,6 +1,7 @@
 public class MeasureMain {
 
-        public static void main(String [] args) {
+        public static void main(String[] args) {
+
                 // Sorter name
                 String name = args[0];
                 // Number of threads.
@@ -21,6 +22,7 @@ public class MeasureMain {
                         System.err.printf("ERROR: Unknown sorter %s.\n", args[0]);
                         System.exit(1);
                 }
+                System.err.println("Available Processors: " + Runtime.getRuntime().availableProcessors());
 
                 // Print information to stderr
                 System.err.printf("Sorting algorithm:  %s\n", name);
@@ -51,20 +53,20 @@ public class MeasureMain {
 
         private static Sorter getSorter(String name, int threads) {
                 switch (name) {
-                case "Sequential":
-                        return new SequentialSort();
-                case "Thread":
-                        return new ThreadSort(threads);
-                case "ExecutorService":
-                        return new ExecutorServiceSort(threads);
-                case "ForkJoinPool":
-                        return new ForkJoinPoolSort(threads);
-                case "ParallelStream":
-                        return new ParallelStreamSort(threads);
-                case "JavaSort":
-                        return new JavaSort(threads);
-                default:
-                        return null;
+                        case "Sequential":
+                                return new SequentialSort();
+                        case "Thread":
+                                return new ThreadSort(threads);
+                        case "ExecutorService":
+                                return new ExecutorServiceSort(threads);
+                        case "ForkJoinPool":
+                                return new ForkJoinPoolSort(threads);
+                        case "ParallelStream":
+                                return new ParallelStreamSort(threads);
+                        case "JavaSort":
+                                return new JavaSort(threads);
+                        default:
+                                return null;
                 }
         }
 }
