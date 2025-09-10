@@ -46,7 +46,7 @@ public class MeasureMain {
 
                 // Prints average execution time and standard deviation to stdout.
                 double[] stats = Auxiliary.statistics(results);
-                System.out.printf("%s %d %.2f %.2f\n", name, sorter.getThreads(), stats[0]/100000000, stats[1]);
+                System.out.printf("%s %d %.2f %.2f\n", name, sorter.getThreads(), stats[0], stats[1]);
 
                 System.err.println("Measurements done");
         }
