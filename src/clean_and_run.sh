@@ -1,4 +1,4 @@
 rm *.class
 javac *.java
 
-java MeasureMain ExecutorService 8 10000000 10 20 42
+java MeasureMain ForkJoinPool 8 5000000 10 20 42
