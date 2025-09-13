@@ -1,6 +1,7 @@
 public class MeasureMain {
 
-        public static void main(String [] args) {
+        public static void main(String[] args) {
+
                 // Sorter name
                 String name = args[0];
                 // Number of threads.
@@ -21,6 +22,7 @@ public class MeasureMain {
                         System.err.printf("ERROR: Unknown sorter %s.\n", args[0]);
                         System.exit(1);
                 }
+                System.err.println("Available Processors: " + Runtime.getRuntime().availableProcessors());
 
                 // Print information to stderr
                 System.err.printf("Sorting algorithm:  %s\n", name);
@@ -44,27 +46,27 @@ public class MeasureMain {
 
                 // Prints average execution time and standard deviation to stdout.
                 double[] stats = Auxiliary.statistics(results);
-                System.out.printf("%s %d %.2f %.2f\n", name, sorter.getThreads(), stats[0], stats[1]);
+                System.out.printf("%s %d %.2f %.2f\n", name, sorter.getThreads(), stats[0]/100000000, stats[1]);
 
                 System.err.println("Measurements done");
         }
 
         private static Sorter getSorter(String name, int threads) {
                 switch (name) {
-                case "Sequential":
-                        return new SequentialSort();
-                case "Thread":
-                        return new ThreadSort(threads);
-                case "ExecutorService":
-                        return new ExecutorServiceSort(threads);
-                case "ForkJoinPool":
-                        return new ForkJoinPoolSort(threads);
-                case "ParallelStream":
-                        return new ParallelStreamSort(threads);
-                case "JavaSort":
-                        return new JavaSort(threads);
-                default:
-                        return null;
+                        case "Sequential":
+                                return new SequentialSort();
+                        case "Thread":
+                                return new ThreadSort(threads);
+                        case "ExecutorService":
+                                return new ExecutorServiceSort(threads);
+                        case "ForkJoinPool":
+                                return new ForkJoinPoolSort(threads);
+                        case "ParallelStream":
+                                return new ParallelStreamSort(threads);
+                        case "JavaSort":
+                                return new JavaSort(threads);
+                        default:
+                                return null;
                 }
         }
 }
