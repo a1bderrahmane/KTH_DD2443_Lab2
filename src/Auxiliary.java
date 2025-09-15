@@ -66,9 +66,10 @@ public class Auxiliary {
         public static boolean validate(Sorter sorter, int n, int initSeed, int m) {
                 for (int i = 0; i < m; ++i) {
                         int[] arr = arrayGenerate(initSeed - i, n);
+                        // System.out.println("initial array : " + Arrays.toString(arr));
                         int[] arrCopy = Arrays.copyOf(arr, n);
                         Arrays.parallelSort(arrCopy);
-                        // System.out.println(Arrays.toString(arr));
+                        // System.out.println("sorted array : " + Arrays.toString(arr));
                         sorter.sort(arr);
                         // System.out.println(Arrays.toString(arr));
 
