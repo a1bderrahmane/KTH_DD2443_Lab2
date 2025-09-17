@@ -1,3 +1,7 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 public class MeasureMain {
 
         public static void main(String[] args) {
@@ -49,6 +53,20 @@ public class MeasureMain {
                 System.out.printf("%s %d %.2f %.2f\n", name, sorter.getThreads(), stats[0], stats[1]);
 
                 System.err.println("Measurements done");
+
+                // Add results into results.csv
+                String resultsString = String.format("%d; %s; %.2f; %.2f\n", sorter.getThreads(), name, stats[0], stats[1]);
+                try {
+                        FileOutputStream fos = new FileOutputStream("../data/results.csv", true);
+                        fos.write(resultsString.getBytes());
+                        fos.close();
+                        System.out.println("Sucessfully saved measurements into data/results.csv");
+                } catch (FileNotFoundException e) {
+                        System.err.println("Unable to find file data/results.csv : " + e.getMessage());
+                } catch (IOException e) {
+                        System.err.println(e.getMessage());
+                }
+
         }
 
         private static Sorter getSorter(String name, int threads) {
