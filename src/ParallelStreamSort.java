@@ -1,3 +1,4 @@
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Stream;
 
 /**
@@ -28,9 +29,11 @@ class Interval {
 
 public class ParallelStreamSort implements Sorter {
     public final int threads;
+    private final ForkJoinPool pool;
 
     public ParallelStreamSort(int threads) {
         this.threads = threads;
+        this.pool = new ForkJoinPool(threads);
     }
 
     public void sort(int[] arr) {
@@ -47,7 +50,11 @@ public class ParallelStreamSort implements Sorter {
             Interval i1 = new Interval(low, pivot - 1);
             Interval i2 = new Interval(pivot + 1, high);
             Stream<Interval> s = Stream.of(i1, i2);
-            s.parallel().forEach(interval -> parallelSort(arr, interval.low, interval.high));
+            try {
+                pool.submit(() -> s.parallel().forEach(interval -> parallelSort(arr, interval.low, interval.high))).get();
+            } catch (Exception e) {
+                e.getStackTrace();
+            }
         }
     }
 }
