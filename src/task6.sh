@@ -12,7 +12,7 @@ rm *.class
 javac MeasureMain.java
 
 # reset content of results.csv and add column labels
-echo "nb threads; sorting algorithm; mean; standard deviation" > data/results.csv
+echo "nb threads; sorting algorithm; mean; standard deviation" > ../data/results.csv
 
 
 # measure sequential algorithm
