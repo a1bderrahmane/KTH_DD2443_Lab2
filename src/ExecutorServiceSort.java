@@ -54,7 +54,7 @@ public class ExecutorServiceSort implements Sorter {
         private boolean tryReserveThread() {
                 while (true) {
                         int current = busyThreads.get();
-                        if (current >= threads )
+                        if (current >= threads)
                                 return false;
                         if (busyThreads.compareAndSet(current, current + 1))
                                 return true;
@@ -64,45 +64,52 @@ public class ExecutorServiceSort implements Sorter {
         private void parallelQuickSort(int[] arr, int low, int high) {
                 if (low >= high)
                         return;
-                int pivot = SortUtils.partition(arr, low, high);
-                Future<?> leftFuture = null;
-                Future<?> rightFuture = null;
+                if (high - low <= 5000) {
+                        // Just do it sequentially
+                        // SequentialSort.quickSort(arr,low,high);
+                        java.util.Arrays.sort(arr, low, high + 1);
+                } else {
 
-                if (tryReserveThread()) {
-                        leftFuture = executor.submit(() -> {
-                                try {
-                                        parallelQuickSort(arr, low, pivot - 1);
-                                } finally {
-                                        busyThreads.decrementAndGet();
-                                }
-                        });
-                } else {
-                        parallelQuickSort(arr, low, pivot - 1);
-                }
-                if (tryReserveThread()) {
-                        rightFuture = executor.submit(() -> {
-                                try {
-                                        parallelQuickSort(arr, pivot + 1, high);
-                                } finally {
-                                        busyThreads.decrementAndGet();
-                                }
-                        });
-                } else {
-                        parallelQuickSort(arr, pivot + 1, high);
-                }
-                // System.out.println(busyThreads);
-                if (leftFuture != null) {
-                        try {
-                                leftFuture.get();
-                        } catch (Exception e) {
-                                throw new RuntimeException("Left sort failed", e);
+                        int pivot = SortUtils.partition(arr, low, high);
+                        Future<?> leftFuture = null;
+                        Future<?> rightFuture = null;
+
+                        if (tryReserveThread()) {
+                                leftFuture = executor.submit(() -> {
+                                        try {
+                                                parallelQuickSort(arr, low, pivot - 1);
+                                        } finally {
+                                                busyThreads.decrementAndGet();
+                                        }
+                                });
+                        } else {
+                                parallelQuickSort(arr, low, pivot - 1);
                         }
-                }
-                if (rightFuture != null) {
-                        try {
-                                rightFuture.get();
-                        } catch (Exception e) {
-                                throw new RuntimeException("Right sort failed", e);
+                        if (tryReserveThread()) {
+                                rightFuture = executor.submit(() -> {
+                                        try {
+                                                parallelQuickSort(arr, pivot + 1, high);
+                                        } finally {
+                                                busyThreads.decrementAndGet();
+                                        }
+                                });
+                        } else {
+                                parallelQuickSort(arr, pivot + 1, high);
+                        }
+                        // System.out.println(busyThreads);
+                        if (leftFuture != null) {
+                                try {
+                                        leftFuture.get();
+                                } catch (Exception e) {
+                                        throw new RuntimeException("Left sort failed", e);
+                                }
+                        }
+                        if (rightFuture != null) {
+                                try {
+                                        rightFuture.get();
+                                } catch (Exception e) {
+                                        throw new RuntimeException("Right sort failed", e);
+                                }
                         }
                 }
         }
