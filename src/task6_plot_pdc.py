@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 n_thread_values = set()
 mean_exec_times = {}
 
-with open("../data/results-pdc.csv", "r") as rfile :
+with open("../data/results-pdc2.csv", "r") as rfile :
     rfile.readline() # ignore first line
     for line in rfile:
         line_data = line.strip().replace(',', '.').split('; ')
@@ -29,10 +29,7 @@ plt.plot(n_thread_values, y, label="Sequential")
 for algorithm in mean_exec_times:
     if (algorithm == "Sequential"):
         continue
-    if (algorithm == "ForkJoinPool"):
-        plt.plot([1, 2, 4, 8, 16], mean_exec_times[algorithm], label=algorithm)
-    else :
-        plt.plot(n_thread_values, mean_exec_times[algorithm], label=algorithm)
+    plt.plot(n_thread_values, mean_exec_times[algorithm], label=algorithm)
 
 plt.xlabel("number of threads used")
 plt.ylabel("mean computation time (s)")
