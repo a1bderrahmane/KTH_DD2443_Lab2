@@ -1,9 +1,9 @@
 # Lab 2 - Java Parallel Programming and Sorting Algorithms
-- Group X
-- Lastname, Firstname and Lastname, Firstname
+- Group AA
+- Bon Alexis and Bouziane Abderrahmane
 
 ## Task 1: Sequential Sort
-We chose to implement the quicksort. 
+We chose to implement the quicksort.
 The algorithm follows the following steps :
 Choose a Pivot: Select an element from the array as the "pivot".
 Partition: Rearrange the array so that all elements less than the pivot come before it, and all elements greater come after it. The pivot is now in its final sorted position.
@@ -88,12 +88,30 @@ Source files:
 
 - `ForkJoinPoolSort.java`
 
-We decided to ...
+In this task, we used java parallel streams to independantly apply recursion in parallel.
+
+The algorithm structure is pretty close to the sequential one.
+Because java parallel streams uses all available cores on the machine, we used a global `ForkJoinPool` to limit the amount of threads working at the same time.
+
+Then, after `partition()` cuts the array in two, we creates two `Interval` objects, which contains begin and end indexes of each sub-arrays, and we create a parallel stream with the two intervals.
+Each `Interval` will lead to a recursive call of `parallelSort` as well as in the sequential algorithm, but here two differents threads will independantly execute it and recursively gives a part of the work to more and more threads, as long as some are available.
+
+
 
 ## Task 6: Performance measurements with PDC
 
-We decided to sort 10,000,000 integers ...
+Source file :
 
-![pdc plot](data/pdc.png)
+- `task6.sh`
 
-We see that ...
+For our performance measurements, we used `MeasureMain` class. For each parallel algorithm, we measured its mean execution time using 1, 2, 4, 8, 16, 32, 48, 64 and 96 threads.
+
+Each measurement contained 10 warmup rounds, and 1000 measure rounds. Each round consisted of sorting an array of 10,000,000 integers.
+
+![pdc plot](data/sort_performance_pdc3.png)
+
+We see that when we use several threads, every parallel algorithm becomes faster than the sequential algorithm.
+
+When the number of threads increases, `ExecutorService` and `ParallelStream` algorithms seems to converge quickly.
+
+On the other hand, `ForkJoinPool` mean execution time increases after a certain point, showing that parallel objects used are costing more time than it gives when we use too many threads.
