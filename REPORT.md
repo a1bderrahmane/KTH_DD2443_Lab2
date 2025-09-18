@@ -80,7 +80,7 @@ Source files:
 - `SortUtils.java`
 - `ForkJoinPoolSort.java`
 
-We decided to ...
+In this approach, we implemented parallel quicksort using Java's `ForkJoinPool`. The sorting logic is encapsulated in a `RecursiveAction` subclass, where the `compute()` method recursively partitions the array and invokes subtasks for the left and right segments. To avoid excessive overhead from creating too many small tasks, we introduce a threshold: if the subarray size falls below this threshold, we sort it sequentially instead of further splitting. `ForkJoinPool` efficiently manages task splitting and work-stealing, allowing threads to execute available subtasks and maximizing parallelism without manual thread management.
 
 ## Task 5: ParallelStreamSort
 
