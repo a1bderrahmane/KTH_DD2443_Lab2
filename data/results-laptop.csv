@@ -1,0 +1,14 @@
+nb threads; sorting algorithm; mean; standard deviation
+1; Sequential; 69769029,00; 4423960,72
+1; ExecutorService; 49954721,00; 8294404,33
+2; ExecutorService; 51801361,00; 8108246,56
+4; ExecutorService; 42562480,00; 5644464,18
+8; ExecutorService; 37062938,00; 4007911,95
+1; ForkJoinPool; 59757248,00; 1968569,94
+2; ForkJoinPool; 34924781,00; 6835527,02
+4; ForkJoinPool; 22433473,00; 3755958,95
+8; ForkJoinPool; 17800937,00; 2039986,66
+1; ParallelStream; 143851920,00; 6369691,43
+2; ParallelStream; 101950887,00; 21303994,15
+4; ParallelStream; 67610884,00; 12495834,34
+8; ParallelStream; 48382150,00; 4638773,22
