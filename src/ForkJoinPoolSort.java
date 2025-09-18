@@ -8,7 +8,7 @@ import java.util.concurrent.RecursiveAction;
 
 public class ForkJoinPoolSort implements Sorter {
         public final int threads;
-        private static final int THRESHOLD = 2048;
+        private static final int THRESHOLD = 5000;
 
         public ForkJoinPoolSort(int threads) {
                 this.threads = threads;
