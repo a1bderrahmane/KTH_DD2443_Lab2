@@ -86,7 +86,7 @@ In this approach, we implemented parallel quicksort using Java's `ForkJoinPool`.
 
 Source files:
 
-- `ForkJoinPoolSort.java`
+- `ParallelStreamSort.java`
 
 In this task, we used java parallel streams to independantly apply recursion in parallel.
 
