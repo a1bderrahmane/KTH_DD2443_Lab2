@@ -3,10 +3,14 @@
 - Lastname, Firstname and Lastname, Firstname
 
 ## Task 1: Sequential Sort
-We chose to implement MergeSort/QuickSort ...
+We chose to implement the quicksort. 
+The algorithm follows the following steps :
+Choose a Pivot: Select an element from the array as the "pivot".
+Partition: Rearrange the array so that all elements less than the pivot come before it, and all elements greater come after it. The pivot is now in its final sorted position.
+Recursively Sort: Apply the same process to the sub-arrays on either side of the pivot.
 
 Source files:
-
+- `Sortutils.java`
 - `SequentialSort.java`
 
 ## Task 2: Amdahl's Law
@@ -59,15 +63,21 @@ We see that even with a high parallelizable part, speedup doesn't scale that muc
 ## Task 3: ExecutorServiceSort
 
 Source files:
-
+- `SortUtils.java`
 - `ExecutorServiceSort.java`
 
-We decided to ...
+In this task, we implemented a parallel version of quicksort using Java's `ExecutorService` with a fixed-size thread pool. The goal was to exploit parallelism by submitting sorting tasks to the pool as the algorithm recurses.
+
+At each recursive step, after partitioning the array around a pivot, we submit new sorting tasks for the left and right subarrays to the thread pool. This allows multiple parts of the array to be sorted in parallel, up to the number of available threads.
+
+However, this approach introduces a challenge: the number of tasks grows exponentially with the depth of recursion, since each partition creates two new tasks. If all threads in the pool are busy waiting for subtasks to complete (for example, if each thread submits more tasks and waits for their completion), we can encounter a deadlock. This happens when all threads are blocked, waiting for tasks that cannot start because there are no free threads left in the pool.
+
+To prevent this issue, we use an atomic counter to track the number of active tasks. Before submitting a new task, we increment the counter; after completion, we decrement it. By ensuring the number of active tasks never exceeds the thread pool size, we avoid deadlocks and keep the algorithm lock-free.
 
 ## Task 4: ForkJoinPoolSort
 
 Source files:
-
+- `SortUtils.java`
 - `ForkJoinPoolSort.java`
 
 We decided to ...
